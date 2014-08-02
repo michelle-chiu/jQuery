@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                <title>Main Page</title>
+                <link rel="stylesheet" href="jquery.mobile-1.3.2.min.css" />
+            <script src="jquery-1.10.2.min.js"></script>
+        <script src="jquery.mobile-1.3.2.min.js"></script>
+                <script type="text/javascript">
+                function submit() {
+                        document.getElementById('amount').innerHTML = enterBudget();
+                }
+                
+                
+                function enterBudget() {
+                        var b = parseInt(document.getElementById('budget').value);
+                        return b;
+                }
+                
+
+                var ingredients=[];
+                var addIngredient = function() {
+                
+                        if ($.trim($("#ing").val())) {
+                                var irs = $("#ing").val();
+                                ingredients.push("<li>"+irs+"</li>");
+                                $("#inger").html(ingredients).listview("refresh");
+                                $("#ing").val("");
+                        }
+                        if (ingredients.length != 0 && $("#name").val() != "") {
+                                $(".ui-disabled").removeClass("ui-disabled");
+                        }
+                        var add = [];
+                        for (var i = 0; i < ingredients.length; i++) {
+                        add += ingredients[i];
+                }
+                        return add;
+                };
+
+
+                $.mobile.page.prototype.options.domCache = true;
+                
+                $(function () {
+                        $("#name,#ing").bind("change keyup", function () {      
+                                if (ingredients.length != 0 && $("#name").val() != "") {
+                                        $(".ui-disabled").removeClass("ui-disabled");
+                                }
+                        });
+                });
+
+                
+                function create_page(page_id) {
+                        var page_id = $("#name").val();
+                        var n = $("#name").val();
+                        var i = $("#ing").val(); 
+                        var x = addIngredient();
+                        
+                        //set whatever content you want to put into the new page
+                        var string = 'Go back to the \
+                        <a href = "#home">Homepage</a><br><br>';
+
+                        //append the new page onto the end of the body
+                        $('#page_body').append('<div data-role="page" id="' + page_id + '"><div data-role="content">' + string + '<div>' +'<h1>'+ n  + '</h1>' +'</div>' + '<br>' + "Ingredients"+'<ul>'+ ingredients + '</ul>' + '</div></div>');
+                        //$('#page_body').append('<div data-role="page" id="' + page_id + '"><div data-role="content">' + string + '<div>' + ingredients)</div></div></div>;
+                        //initialize the new page 
+                        $.mobile.initializePage();
+
+                        //navigate to the new page
+                        $.mobile.changePage("#" + page_id, "pop", false, true);
+
+                        //add a link on the home screen to navigate to the new page (just so nav isn't broken if user goes from new page to home screen)
+                        $('#homeContent').append('<br><br><a href="#' + page_id + '">' + n + x + '</a>');
+
+                        //refresh the home screen so new link is given proper css
+                        $('#homeContent').trigger("create");
+                        
+                        $("#name").val("");
+                        $("#inger").empty().listview("refresh");
+                        $("#new").addClass("ui-disabled");
+                        
+                        
+                        var budget = enterBudget();
+                        var hello = 100//ingredients[0];
+                        document.getElementById('amount').innerHTML = budget - hello;
+                        //document.getElementById('amount').innerHTML = enterBudget();
+                        ingredients.length = 0;
+                }
+                
+                
+                </script>
+                <style type="text/css">
+                #header {
+                        font-family: Georgia;
+                }
+                h1 {
+                        font-size: 2em;
+                        text-align: center;
+                }
+                #footer {
+                        font-family: Georgia;
+                }
+                </style>
+        </head>
+<body>
+
+
+<!-- Start of Homepage -->
+<div data-role="page" id="Main">
+<div data-role="header" data-theme="b" data-position="fixed">
+<h1 id="header">Pochette</h1>
+        <a href="#nav-panel" data-icon="home" data-iconpos="notext">Menu</a>
+    </div><!-- /header -->
+    <div data-role="content" class="jqm-content">
+        <h1>Enter your budget and we'll help you keep track of your expenses!</h1>
+        <label for="name">Budget:</label>
+        <input type="text" placeholder="$..." id="budget" value="" data-clear-btn="true" autocomplete="off" data-mini="true">
+                <a href="javascript:submit();" id="add" data-role="button" data-theme="b" data-icon="check">submit</a>
+                <p>Your budget:</p>
+                                        <a id = "amount"></a><p>dollars</p>
+                
+        <div data-demo-html="#panel-fixed-page1" data-demo-css="true"></div><!--/demo-html -->
+                </div><!-- /content -->
+                <div data-role="footer" data-position="fixed" data-theme="b">
+        <h4 id="footer">Track your expenses!</h4>
+    </div><!-- /footer -->
+    <div data-role="panel" data-position-fixed="true" data-theme="d" id="nav-panel">
+        <ul data-role="listview" data-theme="a" class="nav-search">
+            <li data-icon="delete"><a href="#" data-rel="close">Close Menu</a></li>
+                                <li><a href="#Main">Main</a></li>
+                                <li><a href="#Upload">Upload Expense</a></li>
+                <li><a href="#home">Expenses</a></li>
+        </ul>
+                        </div>
+                        </div>
+                        
+                        
+<!-- Start of Upload -->
+<div data-role="page" id="Upload">
+<div data-role="header" data-theme="b" data-position="fixed">
+        <h1 id="header">Add Expense</h1>
+        <a href="#nav-panel" data-icon="home" data-iconpos="notext">Menu</a>
+    </div><!-- /header -->
+    <div data-role="content" class="jqm-content" id="expenses">
+        <div data-demo-html="#panel-fixed-page1" data-demo-css="true"></div><!--/demo-html -->
+
+                
+                
+                <div data-role="content" id="content">
+                <h1>Upload an Expense</h1>
+                <br>
+                <br>
+                <form>
+
+                        <label for="text-1">Title:</label>
+                        <br>
+                        <input type="text" name="text-1" id="name" value="">
+                        <br>
+                        <label for="text-1">Amount Spent:</label>
+                        <br>
+                        <form>
+                        <input type="text" name="text-6" id="ing" value="" placeholder="$...">
+                        </form>
+                        
+                        <form>
+                        <a href="javascript:addIngredient();" data-role="button" data-icon="forward">
+                                Submit
+                        </a>
+                        </form>
+                        <br>
+                        <div id="IngredientList"><!--list of amount-->
+                        <ol data-role="listview" id="inger">
+                        </ol>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        </div>
+                </form>
+                        <form>
+                        <a href = "#home" onclick="create_page()" data-role="button"  data-icon="plus" class="ui-disabled" id = "new">
+                                Make Expense
+                        </a>
+                        </form>
+                        
+                </div>
+
+                
+                </div><!-- /content -->
+                <div data-role="footer" data-position="fixed" data-theme="b">
+        <h4 id="footer">Track your expenses!</h4>
+    </div><!-- /footer -->
+    <div data-role="panel" data-position-fixed="true" data-theme="d" id="nav-panel">
+        <ul data-role="listview" data-theme="a" class="nav-search">
+            <li data-icon="delete"><a href="#" data-rel="close">Close Menu</a></li>
+                                <li><a href="#Main">Main</a></li>
+                <li><a href="#Upload">Upload Expense</a></li>
+                                <li><a href="#home">Expenses</a></li>
+        </ul>
+
+                        </div>
+                        </div>
+
+
+                        
+
+                        
+<!-- Start of EXPENSES -->
+<div data-role="page" id="home">
+<div data-role="header" data-theme="b" data-position="fixed">
+        <h1 id="header">Pochette</h1>
+        <a href="#nav-panel" data-icon="home" data-iconpos="notext">Menu</a>
+        <a href="#add-form" data-icon="gear" data-iconpos="notext">Username</a>
+    </div><!-- /header -->
+    <div data-role="content" id = "homeContent" class="jqm-content">
+        <div data-demo-html="#panel-fixed-page1" data-demo-css="true"></div><!--/demo-html -->
+                <h1>Expenses</h1>
+                
+
+                </div><!-- /content -->
+                <div data-role="footer" data-position="fixed" data-theme="b">
+        <h4 id="footer">Track your expenses!</h4>
+    </div><!-- /footer -->
+    <div data-role="panel" data-position-fixed="true" data-theme="d" id="nav-panel">
+        <ul data-role="listview" data-theme="a" class="nav-search">
+            <li data-icon="delete"><a href="#" data-rel="close">Close Menu</a></li>
+                                <li><a href="#Main">Main</a></li>
+                <li><a href="#Upload">Upload Expense</a></li>
+                <li><a href="#home">Expenses</a></li>
+
+        </ul>
+
+                        </div>
+                        </div>
+
+</body>
+</html>

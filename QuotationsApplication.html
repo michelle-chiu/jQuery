@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>list </title>
+		<link rel="stylesheet" href="jquery.mobile-1.3.2.min.css" />
+	    <script src="jquery-1.10.2.min.js"></script>
+        <script src="jquery.mobile-1.3.2.min.js"></script>
+		<script type="text/javascript">
+		//javascript starts 
+		var list= [];
+    var addTask = function() {
+			// get the text from the text field
+			var tsk = document.getElementById("task");
+			var whatToDo = tsk.value;
+			// add it to the end of the taskList
+			var lst = document.getElementById("taskList");
+			lst.innerHTML +="<li>"+ whatToDo + "</li>";
+			// clear text field
+			tsk.value = "";
+			//store in array
+			list.push(whatToDo);	
+		};
+		
+		//javascript ends
+		</script>
+		<style type="text/css">
+		/* css begins */
+		li{
+			color:blue;
+		}
+		
+		/* css ends */
+		</style>
+	</head>
+	<body>
+		<!-- Start of first page -->
+		<div data-role="page" id="main">
+			<!-- header -->
+			<div data-role="header" data-theme="b">
+				<h1>Your To Do List</h1>
+			</div>
+			<!-- /header -->
+			<!-- content -->
+			<div data-role="content">
+				<a href="#confirm">confirm</a>
+				<form>
+					<label for="taskList">To do:</label>
+					<textarea cols="40" rows="8" name="task" id="task"></textarea>
+				</form>
+				<a href="javascript:addTask();" data-role="button" data-theme="b"> add </a>
+				<ul id="taskList" data-role="listView" data-inset="true"></ul>
+			</div>
+			<!-- /content -->
+		</div>
+		<!-- End page one -->
+		<!-- Start of second page -->
+		<div data-role="page" id="confirm">
+			<div data-role="header" data-theme="b">
+				<h1>Your To Do List</h1>
+			</div>
+			<div data-role="content">
+				<h1>Task Navigation</h1>
+				 <a href="#main" data-role="button" data-theme="b">completed</a>
+				 <a href="#main" data-role="button" data-theme="a">delete</a>
+				 <a href="#main" data-role="button" data-theme="c">cancel</a>
+			</div>
+		</div>
+				
+	</body>
+</html>
